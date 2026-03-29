@@ -9,19 +9,24 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   try {
+    const body = req.body ?? {}
+    console.log('[brief] sending to backend:', JSON.stringify(body))
+
     const response = await fetch(`${BACKEND}/brief`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify(body),
     })
 
     const text = await response.text()
+    console.log('[brief] backend status:', response.status, 'body:', text.slice(0, 200))
+
     let data
     try { data = JSON.parse(text) } catch { data = { raw: text } }
 
     return res.status(response.status).json(data)
   } catch (err) {
-    console.error('[proxy/brief]', err.message)
-    return res.status(500).json({ error: 'Proxy request failed', detail: err.message })
+    console.error('[brief] error:', err.message)
+    return res.status(500).json({ error: err.message })
   }
 }
