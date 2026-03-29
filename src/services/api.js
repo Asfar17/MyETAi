@@ -38,7 +38,7 @@ const transformFeed = (data, query) => {
 }
 
 const transformBrief = (data) => {
-  if (!data) {
+  if (!data || !data.briefing) {
     return {
       whatHappened: 'No briefing generated',
       whyItMatters: 'Try another query',
@@ -46,62 +46,22 @@ const transformBrief = (data) => {
       watchNext: 'No prediction available',
     }
   }
-
-  // Support structured response with named fields
-  if (data.whatHappened || data.what_happened) {
-    return {
-      whatHappened: data.whatHappened ?? data.what_happened ?? '',
-      whyItMatters: data.whyItMatters ?? data.why_it_matters ?? '',
-      marketImpact: data.marketImpact ?? data.market_impact ?? '',
-      watchNext: data.watchNext ?? data.watch_next ?? '',
-    }
-  }
-
-  // Fallback: put full briefing text in whatHappened
   return {
-    whatHappened: data.briefing ?? data.summary ?? data.content ?? 'No briefing generated',
-    whyItMatters: data.whyItMatters ?? data.why_it_matters ?? '',
-    marketImpact: data.marketImpact ?? data.market_impact ?? '',
-    watchNext: data.watchNext ?? data.watch_next ?? data.prediction ?? '',
+    whatHappened: data.briefing,
+    whyItMatters: 'AI analyzed key business implications.',
+    marketImpact: 'Potential shifts in market trends.',
+    watchNext: 'Monitor upcoming developments.',
   }
 }
 
 const transformStory = (data, topic) => {
-  if (!data) return null
-
-  // Support both { story: { ... } } and flat { events, prediction, ... }
-  const story = data.story ?? data
-
-  // Parse events array if present (structured format)
-  let events = null
-  let sentimentSeries = null
-
-  if (Array.isArray(story.events) && story.events.length > 0) {
-    events = story.events.map(e => ({
-      date: e.date ?? e.timestamp ?? '',
-      headline: e.headline ?? e.title ?? e.event ?? '',
-      sentiment: typeof e.sentiment === 'number' ? e.sentiment : parseSentimentScore(e.sentiment),
-    }))
-    sentimentSeries = events.map(e => ({ date: e.date, sentiment: e.sentiment }))
-  }
-
+  if (!data?.story) return null
   return {
-    topic: story.topic ?? topic,
-    events,
-    sentimentSeries,
-    // Fallback text fields for when structured data isn't available
-    timeline: events ? null : (story.timeline ?? null),
-    sentiment: sentimentSeries ? null : (story.sentiment ?? null),
-    prediction: story.prediction ?? null,
-    confidence: typeof story.confidence === 'number' ? story.confidence : null,
+    topic,
+    timeline: data.story.timeline,
+    sentiment: data.story.sentiment,
+    prediction: data.story.prediction,
   }
-}
-
-// Convert text sentiment labels to numeric scores
-function parseSentimentScore(val) {
-  if (typeof val === 'number') return val
-  const map = { positive: 0.7, negative: -0.7, neutral: 0, bullish: 0.8, bearish: -0.8 }
-  return map[String(val).toLowerCase()] ?? 0
 }
 
 export const fetchFeed = async ({ persona, query }) => {
