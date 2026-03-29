@@ -1,6 +1,7 @@
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer,
 } from 'recharts'
+import MarkdownText from './MarkdownText'
 
 const DEFAULT_STORY = {
   topic: 'India-US Trade Tariff Negotiations',
@@ -119,7 +120,7 @@ function StoryTracker({ data, loading }) {
           {hasEvents
             ? <Timeline events={story.events} />
             : story.timeline
-              ? <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{story.timeline}</p>
+              ? <MarkdownText content={story.timeline} />
               : <p className="text-xs text-gray-400">No timeline data available.</p>
           }
         </div>
@@ -132,7 +133,7 @@ function StoryTracker({ data, loading }) {
           {hasSentiment
             ? <SentimentChart sentimentSeries={story.sentimentSeries} />
             : story.sentiment
-              ? <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{story.sentiment}</p>
+              ? <MarkdownText content={story.sentiment} />
               : <p className="text-xs text-gray-400">No sentiment data available.</p>
           }
         </div>
@@ -142,7 +143,7 @@ function StoryTracker({ data, loading }) {
           <h3 className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-3 flex items-center gap-1.5">
             🔮 AI Prediction
           </h3>
-          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-3">{story.prediction}</p>
+          <MarkdownText content={story.prediction} className="mb-3" />
           {story.confidence != null && (
             <div className="mt-3">
               <div className="flex justify-between text-[11px] text-gray-500 dark:text-gray-400 mb-1.5">

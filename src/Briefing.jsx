@@ -1,4 +1,4 @@
-
+import MarkdownText from './MarkdownText'
 
 const SECTIONS = [
   {
@@ -74,7 +74,7 @@ function Briefing({ data, loading }) {
             <p className={`text-xs font-bold uppercase tracking-wider ${labelColor} mb-2 flex items-center gap-1.5`}>
               <span>{icon}</span>{label}
             </p>
-            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{briefing[key]}</p>
+            <MarkdownText content={briefing[key]} />
           </div>
         ))}
       </div>
