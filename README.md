@@ -4,7 +4,7 @@
 ![AI](https://img.shields.io/badge/AI-LangGraph-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-### AI-Native Personalized Business News Platform
+### AI-Native Personalized News Platform
 
  **“From reading news → to understanding impact → to making decisions.”**
 
