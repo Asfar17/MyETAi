@@ -6,7 +6,7 @@
 
 ### AI-Native Personalized Business News Platform
 
-> **“From reading news → to understanding impact → to making decisions.”**
+ **“From reading news → to understanding impact → to making decisions.”**
 
 ---
 
@@ -105,7 +105,7 @@ Timeline → Sentiment → Prediction → Final Output
 
 ## 🌐 Live Demo
 
-👉 [Add your Vercel URL here]
+👉 https://my-et-ai.vercel.app/
 
 ---
 
