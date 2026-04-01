@@ -36,7 +36,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const body = req.body ?? {}
-    const result = await proxyPost('http://34.71.200.57:8000/track', body)
+    const result = await proxyPost('http://34.63.155.127:8000/track', body)
     let data
     try { data = JSON.parse(result.body) } catch { data = { raw: result.body } }
     return res.status(result.status).json(data)
